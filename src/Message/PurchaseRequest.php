@@ -38,6 +38,25 @@ class PurchaseRequest extends AbstractRequest
     }
 
     /**
+     * Validates the request.
+     *
+     * @throws \Omnipay\Common\Exception\InvalidRequestException
+     */
+    protected function validateRequest()
+    {
+        parent::validateRequest();
+
+        $this->validate(
+            'currency',
+            'type',
+            'brand',
+            'country',
+            'amount'
+        );
+    }
+
+
+    /**
      * Sends supplied data.
      *
      * @throws \Omnipay\Common\Exception\InvalidRequestException
@@ -56,24 +75,6 @@ class PurchaseRequest extends AbstractRequest
         );
 
         return new PurchaseResponse($this, $response->getBody());
-    }
-
-    /**
-     * Validates the request.
-     *
-     * @throws \Omnipay\Common\Exception\InvalidRequestException
-     */
-    protected function validateRequest()
-    {
-        parent::validateRequest();
-
-        $this->validate(
-            'currency',
-            'type',
-            'brand',
-            'country',
-            'amount'
-        );
     }
 
     /**

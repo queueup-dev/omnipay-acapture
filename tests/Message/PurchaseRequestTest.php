@@ -12,7 +12,7 @@ use Omnipay\Tests\TestCase;
 class PurchaseRequestTest extends TestCase
 {
     /**
-     * @var Mock|PurchaseRequest
+     * @var PurchaseRequest
      */
     protected $request;
 

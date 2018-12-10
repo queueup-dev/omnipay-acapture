@@ -129,4 +129,6 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     {
         return (getenv('ACAPTURE_ENDPOINT') ?: 'https://https://test.acaptureservices.com/v1/');
     }
+
+    public abstract function getPath();
 }
