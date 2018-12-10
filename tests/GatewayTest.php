@@ -2,6 +2,8 @@
 namespace Omnipay\Acapture\Tests;
 
 use Omnipay\Acapture\Gateway;
+use Omnipay\Acapture\Message\PaymentStatusRequest;
+use Omnipay\Acapture\Message\PurchaseRequest;
 use Omnipay\Tests\TestCase;
 
 class GatewayTest extends TestCase
@@ -19,5 +21,52 @@ class GatewayTest extends TestCase
     public function testGetName()
     {
         $this->assertSame('acapture', $this->gateway->getName());
+    }
+
+    public function testPurchase()
+    {
+        $purchase = $this->gateway->purchase();
+
+        $this->assertInstanceOf(PurchaseRequest::class, $purchase);
+    }
+
+    public function testPaymentStatus()
+    {
+        $paymentStatus = $this->gateway->paymentStatus('12345');
+
+        $this->assertInstanceOf(PaymentStatusRequest::class, $paymentStatus);
+        $this->assertSame('12345', $paymentStatus->getPaymentId());
+    }
+
+    public function testGetSetPassword()
+    {
+        $this->gateway->setPassword('12345');
+        $this->assertSame($this->gateway->getPassword(), '12345');
+    }
+
+    public function testGetSetUserId()
+    {
+        $this->gateway->setUserId('user21');
+        $this->assertSame($this->gateway->getUserId(), 'user21');
+    }
+
+    public function testGetSetEntityId()
+    {
+        $this->gateway->setEntityId('entity123');
+        $this->assertSame($this->gateway->getEntityId(), 'entity123');
+    }
+
+    public function  testDateIsTransmitted()
+    {
+        $this->gateway->setPassword('12345');
+        $this->gateway->setUserId('user21');
+        $this->gateway->setEntityId('entity123');
+
+        // It's not really an unit-test but quite important to test anyway.
+        $purchase = $this->gateway->purchase();
+
+        $this->assertSame('12345', $purchase->getPassword());
+        $this->assertSame('user21', $purchase->getUserId());
+        $this->assertSame('entity123', $purchase->getEntityId());
     }
 }
