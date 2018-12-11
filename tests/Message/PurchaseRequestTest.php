@@ -1,7 +1,6 @@
 <?php
 namespace Omnipay\Acapture\Tests\Message;
 
-use Mockery\Mock;
 use Omnipay\Acapture\Exception\InvalidCountryException;
 use Omnipay\Acapture\Exception\InvalidPaymentBrandException;
 use Omnipay\Acapture\Exception\InvalidPaymentTypeException;
@@ -170,5 +169,17 @@ class PurchaseRequestTest extends TestCase
     {
         $this->setMockRequestData();
         $this->assertInstanceOf(PurchaseResponse::class, $this->request->send());
+    }
+
+    public function testGetEndpointDefault()
+    {
+        $this->assertSame('https://test.acaptureservices.com/v1/', $this->request->getEndpoint());
+    }
+
+    public function testGetEndpointWithEnv()
+    {
+        putenv('ACAPTURE_ENDPOINT=https://test.test.test/v5/');
+
+        $this->assertSame('https://test.test.test/v5/', $this->request->getEndpoint());
     }
 }
