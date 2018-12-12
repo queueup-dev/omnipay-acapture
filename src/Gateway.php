@@ -2,6 +2,7 @@
 namespace Omnipay\Acapture;
 
 use Omnipay\Acapture\Message\AbstractRequest;
+use Omnipay\Acapture\Message\CheckoutRequest;
 use Omnipay\Acapture\Message\PurchaseRequest;
 use Omnipay\Common\AbstractGateway;
 
@@ -20,13 +21,27 @@ class Gateway extends AbstractGateway
     }
 
     /**
+     * Creates a server-to-server purchase request.
+     *
      * @param array $parameters
      *
-     * @return AbstractRequest|PurchaseRequest
+     * @return \Omnipay\Common\Message\AbstractRequest|CheckoutRequest
      */
     public function purchase($parameters = array())
     {
-        return $this->createRequest('\Omnipay\Acapture\Message\PurchaseRequest', $parameters);
+        return $this->createRequest(PurchaseRequest::class, $parameters);
+    }
+
+    /**
+     * Creates a embed purchase request.
+     *
+     * @param array $parameters
+     *
+     * @return \Omnipay\Common\Message\AbstractRequest|CheckoutRequest
+     */
+    public function embed($parameters = array())
+    {
+        return $this->createRequest(CheckoutRequest::class, $parameters);
     }
 
     /**

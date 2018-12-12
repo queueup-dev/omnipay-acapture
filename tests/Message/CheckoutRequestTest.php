@@ -4,17 +4,15 @@ namespace Omnipay\Acapture\Tests\Message;
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\RequestInterface;
 use Guzzle\Http\Message\Response;
-use Omnipay\Acapture\Exception\InvalidCountryException;
-use Omnipay\Acapture\Exception\InvalidPaymentBrandException;
 use Omnipay\Acapture\Exception\InvalidPaymentTypeException;
-use Omnipay\Acapture\Message\PurchaseRequest;
-use Omnipay\Acapture\Message\PurchaseResponse;
+use Omnipay\Acapture\Message\CheckoutRequest;
+use Omnipay\Acapture\Message\CheckoutResponse;
 use Omnipay\Tests\TestCase;
 
-class PurchaseRequestTest extends TestCase
+class CheckoutRequestTest extends TestCase
 {
     /**
-     * @var PurchaseRequest
+     * @var CheckoutRequest
      */
     protected $request;
 
@@ -43,19 +41,12 @@ class PurchaseRequestTest extends TestCase
         $mockClient = \Phake::mock(Client::class);
         \Phake::when($mockClient)->post(\Phake::anyParameters())->thenReturn($clientInterface);
 
-        $this->request = new PurchaseRequest($mockClient, $this->getHttpRequest());
+        $this->request = new CheckoutRequest($mockClient, $this->getHttpRequest());
         $this->request->initialize();
 
         $this->password = uniqid('', true);
         $this->entityId = uniqid('', true);
         $this->userId = uniqid('', true);
-    }
-
-    public function paymentBrands()
-    {
-        return [
-            ["IDEAL"]
-        ];
     }
 
     public function paymentTypes()
@@ -66,35 +57,9 @@ class PurchaseRequestTest extends TestCase
         ];
     }
 
-    public function testGetBrandEmpty()
-    {
-        $this->assertSame(null, $this->request->getBrand());
-    }
-
     public function testGetTypeEmpty()
     {
         $this->assertSame(null, $this->request->getType());
-    }
-
-    public function testGetCountryEmpty()
-    {
-        $this->assertSame(null, $this->request->getCountry());
-    }
-
-    public function testSetBrandUsingInvalidBrand()
-    {
-        $this->setExpectedException(InvalidPaymentBrandException::class, 'Payment of brand bla not supported');
-        $this->request->setBrand('bla');
-    }
-
-    /**
-     * @param $paymentBrand
-     * @dataProvider paymentBrands
-     */
-    public function testGetSetBrandUsingValidBrands($paymentBrand)
-    {
-        $this->request->setBrand($paymentBrand);
-        $this->assertSame($paymentBrand, $this->request->getBrand());
     }
 
     /**
@@ -113,27 +78,9 @@ class PurchaseRequestTest extends TestCase
         $this->request->setType('BLA');
     }
 
-    public function testSetCountryWithValidAlpha2()
-    {
-        $this->request->setCountry('NL');
-        $this->assertSame('NL', $this->request->getCountry());
-    }
-
-    public function testSetCountryWithValidAlpha3()
-    {
-        $this->setExpectedException(InvalidCountryException::class, 'Supplied country NLD is invalid alpha2 country or unsupported');
-        $this->request->setCountry('NLD');
-    }
-
-    public function testSetCountryWithInvalidAlpha3()
-    {
-        $this->setExpectedException(InvalidCountryException::class, 'Supplied country LLL is invalid alpha2 country or unsupported');
-        $this->request->setCountry('LLL');
-    }
-
     public function testGetPathReturnsRightPath()
     {
-        $this->assertSame('payments', $this->request->getPath());
+        $this->assertSame('checkouts', $this->request->getPath());
     }
 
     public function setMockRequestData()
@@ -143,12 +90,8 @@ class PurchaseRequestTest extends TestCase
             ->setUserId($this->userId)
             ->setEntityId($this->entityId)
             ->setType('DB')
-            ->setBrand('IDEAL')
-            ->setCountry('NL')
             ->setCurrency('EUR')
-            ->setAmount('50.02')
-            ->setIssuer('TESTBANK')
-            ->setReturnUrl('https://test.test/notify');
+            ->setAmount('50.02');
     }
 
     public function testGetData()
@@ -161,11 +104,7 @@ class PurchaseRequestTest extends TestCase
             'authentication.entityId' => $this->entityId,
             'amount' => '50.02',
             'currency' => 'EUR',
-            'paymentBrand' => 'IDEAL',
-            'paymentType' => 'DB',
-            'bankAccount.bankName' => 'TESTBANK',
-            'bankAccount.country' => 'NL',
-            'shopperResultUrl' => 'https://test.test/notify'
+            'paymentType' => 'DB'
         ];
 
         $data = $this->request->getData();
@@ -175,18 +114,18 @@ class PurchaseRequestTest extends TestCase
     public function testSendWithValidData()
     {
         $this->setMockRequestData();
-        $this->assertInstanceOf(PurchaseResponse::class, $this->request->send());
+        $this->assertInstanceOf(CheckoutResponse::class, $this->request->send());
     }
 
     public function testGetEndpointDefault()
     {
-        putenv('ACAPTURE_ENDPOINT');
         $this->assertSame('https://test.acaptureservices.com/v1/', $this->request->getEndpoint());
     }
 
     public function testGetEndpointWithEnv()
     {
         putenv('ACAPTURE_ENDPOINT=https://test.test.test/v5/');
+
         $this->assertSame('https://test.test.test/v5/', $this->request->getEndpoint());
     }
 
@@ -194,16 +133,14 @@ class PurchaseRequestTest extends TestCase
     {
         $this->setMockRequestData();
         $this->assertSame(
-            'payments?'.
+            'checkouts?'.
             'authentication.userId='.
             $this->userId.
             '&authentication.password='.
             $this->password.
             '&authentication.entityId='.
             $this->entityId.
-            '&amount=50.02&currency=EUR&paymentBrand=IDEAL&paymentType=DB'.
-            '&bankAccount.bankName=TESTBANK&bankAccount.country=NL'.
-            '&shopperResultUrl=https%3A%2F%2Ftest.test%2Fnotify'
+            '&amount=50.02&currency=EUR&paymentType=DB'
             , $this->request->getDataUrl()
         );
     }

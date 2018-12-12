@@ -2,6 +2,7 @@
 namespace Omnipay\Acapture\Tests;
 
 use Omnipay\Acapture\Gateway;
+use Omnipay\Acapture\Message\CheckoutRequest;
 use Omnipay\Acapture\Message\PaymentStatusRequest;
 use Omnipay\Acapture\Message\PurchaseRequest;
 use Omnipay\Tests\TestCase;
@@ -28,6 +29,13 @@ class GatewayTest extends TestCase
         $purchase = $this->gateway->purchase();
 
         $this->assertInstanceOf(PurchaseRequest::class, $purchase);
+    }
+
+    public function testEmbed()
+    {
+        $purchase = $this->gateway->embed();
+
+        $this->assertInstanceOf(CheckoutRequest::class, $purchase);
     }
 
     public function testPaymentStatus()

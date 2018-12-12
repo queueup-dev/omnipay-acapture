@@ -38,8 +38,8 @@ $gateway
     ->setUserId('youruserid')
     ->setEntityId('yourentityid');
 ```
-### Creating a payment
-Once you have setup the gateway you can create a PaymentRequest;
+### Creating a payment (server-to-server)
+This payment requests requires you to be PCI compliant for credit cards.
 ```
 $purchaseRequest = $gateway->purchase();
 $purchaseRequest
@@ -52,6 +52,23 @@ $purchaseRequest
     
 $response = $purchaseRequest->send();
 ```
+### Create a payment (embedded)
+This payment request does not require compliance but requires web embedding.
+```
+$embedRequest = $gateway->embed();
+$embedRequest
+    ->setType(PaymentType::PAYMENT_TYPE_DB)
+    ->setCurrency('EUR')
+    ->setAmount('5.00');
+    
+$response = $embedRequest->send();
+```
+Embedding can be done on the front-end using the following code;
+```
+<script src="{$response->getEmbedUrl()}"></script>
+<form action="{shopperResultUrl}" class="paymentWidgets" data-brands="VISA MASTER AMEX"></form>
+```
+for more information see the [acapture documentation](https://docs.acaptureservices.com/tutorials/integration-guide).
 ### Checking payment status
 After the payment request has been made you can check on the status;
 ```
