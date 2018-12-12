@@ -24,7 +24,7 @@ class PurchaseRequest extends AbstractRequest
      */
     public function getData()
     {
-        return parent::getData() +  [
+        return parent::getData() + [
             'amount' => $this->getAmount(),
             'currency' => $this->getCurrency(),
             'paymentBrand' => $this->getBrand(),
@@ -128,14 +128,14 @@ class PurchaseRequest extends AbstractRequest
     public function setCountry($country)
     {
         try {
-            $country = (new ISO3166)->alpha2($country);
+            $countryData = (new ISO3166)->alpha2($country);
         } catch (\Exception $e) { // We don't really care what went wrong
             throw new InvalidCountryException(
-                'Supplied country '. $country['alpha2'] . ' is invalid alpha2 country or unsupported'
+                'Supplied country ' . $country . ' is invalid alpha2 country or unsupported'
             );
         }
 
-        return $this->setParameter('country', $country['alpha2']);
+        return $this->setParameter('country', $countryData['alpha2']);
     }
 
     /**
