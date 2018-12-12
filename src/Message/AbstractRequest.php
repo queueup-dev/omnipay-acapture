@@ -32,12 +32,20 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     public function getData()
     {
         return [
-            'authentication' => [
-                'userId' => $this->getUserId(),
-                'password' => $this->getPassword(),
-                'entityId' => $this->getEntityId()
-            ]
+            'authentication.userId' => $this->getUserId(),
+            'authentication.password' => $this->getPassword(),
+            'authentication.entityId' => $this->getEntityId()
         ];
+    }
+
+    /**
+     * Returns the data as URL.
+     *
+     * @return string
+     */
+    public function getDataUrl()
+    {
+        return $this->getPath() . '?' . http_build_query($this->getData());
     }
 
     /**

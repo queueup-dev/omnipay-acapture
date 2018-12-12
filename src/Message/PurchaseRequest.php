@@ -29,11 +29,9 @@ class PurchaseRequest extends AbstractRequest
             'currency' => $this->getCurrency(),
             'paymentBrand' => $this->getBrand(),
             'paymentType' => $this->getType(),
-            'bankAccount' => [
-                'bankName' => $this->getIssuer(),
-                'country' => $this->getCountry()
-            ],
-            'shopperResultUrl' => $this->getNotifyUrl()
+            'bankAccount.bankName' => $this->getIssuer(),
+            'bankAccount.country' => $this->getCountry(),
+            'shopperResultUrl' => $this->getReturnUrl()
         ];
     }
 
@@ -51,7 +49,8 @@ class PurchaseRequest extends AbstractRequest
             'type',
             'brand',
             'country',
-            'amount'
+            'amount',
+            'returnUrl'
         );
     }
 
@@ -69,12 +68,10 @@ class PurchaseRequest extends AbstractRequest
         $this->validateRequest();
 
         $response = $this->httpClient->post(
-            $this->getPath(),
-            null,
-            $this->getData()
-        );
+            $this->getDataUrl()
+        )->send();
 
-        return new PurchaseResponse($this, $response->getBody());
+        return new PurchaseResponse($this, json_decode((string)$response->getBody(), true));
     }
 
     /**

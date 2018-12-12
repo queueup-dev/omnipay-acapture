@@ -36,12 +36,10 @@ class PaymentStatusRequest extends AbstractRequest
         $this->validateRequest();
 
         $response = $this->httpClient->post(
-            $this->getPath(),
-            null,
-            $this->getData()
-        );
+            $this->getDataUrl()
+        )->send();
 
-        return new PaymentStatusResponse($this, $response->getBody());
+        return new PaymentStatusResponse($this, json_decode((string)$response->getBody(), true));
     }
 
     /**

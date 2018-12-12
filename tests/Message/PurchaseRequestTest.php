@@ -1,6 +1,9 @@
 <?php
 namespace Omnipay\Acapture\Tests\Message;
 
+use Guzzle\Http\Client;
+use Guzzle\Http\Message\RequestInterface;
+use Guzzle\Http\Message\Response;
 use Omnipay\Acapture\Exception\InvalidCountryException;
 use Omnipay\Acapture\Exception\InvalidPaymentBrandException;
 use Omnipay\Acapture\Exception\InvalidPaymentTypeException;
@@ -32,7 +35,15 @@ class PurchaseRequestTest extends TestCase
 
     public function setUp()
     {
-        $this->request = new PurchaseRequest($this->getHttpClient(), $this->getHttpRequest());
+        $responseInterface = \Phake::mock(Response::class);
+
+        $clientInterface = \Phake::mock(RequestInterface::class);
+        \Phake::when($clientInterface)->send()->thenReturn($responseInterface);
+
+        $mockClient = \Phake::mock(Client::class);
+        \Phake::when($mockClient)->post(\Phake::anyParameters())->thenReturn($clientInterface);
+
+        $this->request = new PurchaseRequest($mockClient, $this->getHttpRequest());
         $this->request->initialize();
 
         $this->password = uniqid('', true);
@@ -137,7 +148,7 @@ class PurchaseRequestTest extends TestCase
             ->setCurrency('EUR')
             ->setAmount('50.02')
             ->setIssuer('TESTBANK')
-            ->setNotifyUrl('https://test.test/notify');
+            ->setReturnUrl('https://test.test/notify');
     }
 
     public function testGetData()
@@ -145,19 +156,15 @@ class PurchaseRequestTest extends TestCase
         $this->setMockRequestData();
 
         $expectedData = [
-            'authentication' => [
-                'userId' => $this->userId,
-                'password' => $this->password,
-                'entityId' => $this->entityId
-            ],
+            'authentication.userId' => $this->userId,
+            'authentication.password' => $this->password,
+            'authentication.entityId' => $this->entityId,
             'amount' => '50.02',
             'currency' => 'EUR',
             'paymentBrand' => 'IDEAL',
             'paymentType' => 'DB',
-            'bankAccount' => [
-                'bankName' => 'TESTBANK',
-                'country' => 'NL'
-            ],
+            'bankAccount.bankName' => 'TESTBANK',
+            'bankAccount.country' => 'NL',
             'shopperResultUrl' => 'https://test.test/notify'
         ];
 
@@ -181,5 +188,23 @@ class PurchaseRequestTest extends TestCase
         putenv('ACAPTURE_ENDPOINT=https://test.test.test/v5/');
 
         $this->assertSame('https://test.test.test/v5/', $this->request->getEndpoint());
+    }
+
+    public function testGetDataUrl()
+    {
+        $this->setMockRequestData();
+        $this->assertSame(
+            'payments?'.
+            'authentication.userId='.
+            $this->userId.
+            '&authentication.password='.
+            $this->password.
+            '&authentication.entityId='.
+            $this->entityId.
+            '&amount=50.02&currency=EUR&paymentBrand=IDEAL&paymentType=DB'.
+            '&bankAccount.bankName=TESTBANK&bankAccount.country=NL'.
+            '&shopperResultUrl=https%3A%2F%2Ftest.test%2Fnotify'
+            , $this->request->getDataUrl()
+        );
     }
 }

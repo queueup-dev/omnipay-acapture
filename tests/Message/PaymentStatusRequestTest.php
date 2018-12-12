@@ -1,6 +1,9 @@
 <?php
 namespace Omnipay\Acapture\Tests\Message;
 
+use Guzzle\Http\Client;
+use Guzzle\Http\Message\RequestInterface;
+use Guzzle\Http\Message\Response;
 use Omnipay\Acapture\Message\PaymentStatusRequest;
 use Omnipay\Acapture\Message\PaymentStatusResponse;
 use Omnipay\Tests\TestCase;
@@ -29,7 +32,15 @@ class PaymentStatusRequestTest extends TestCase
 
     public function setUp()
     {
-        $this->request = new PaymentStatusRequest($this->getHttpClient(), $this->getHttpRequest());
+        $responseInterface = \Phake::mock(Response::class);
+
+        $clientInterface = \Phake::mock(RequestInterface::class);
+        \Phake::when($clientInterface)->send()->thenReturn($responseInterface);
+
+        $mockClient = \Phake::mock(Client::class);
+        \Phake::when($mockClient)->post(\Phake::anyParameters())->thenReturn($clientInterface);
+
+        $this->request = new PaymentStatusRequest($mockClient, $this->getHttpRequest());
         $this->request->initialize();
 
         $this->password = uniqid('', true);
