@@ -91,7 +91,7 @@ abstract class ResultCode
      *
      * @param $code
      *
-     * @return false|int
+     * @return bool
      */
     public static function isChargeback($code)
     {

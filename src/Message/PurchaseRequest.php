@@ -131,7 +131,7 @@ class PurchaseRequest extends AbstractRequest
             $country = (new ISO3166)->alpha2($country);
         } catch (\Exception $e) { // We don't really care what went wrong
             throw new InvalidCountryException(
-                'Supplied country '. $country . ' is invalid alpha2 country or unsupported'
+                'Supplied country '. $country['alpha2'] . ' is invalid alpha2 country or unsupported'
             );
         }
 
