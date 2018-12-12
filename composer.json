@@ -27,7 +27,8 @@
     },
     "require-dev": {
         "omnipay/tests": "2.1.*",
-        "phake/phake": "@stable"
+        "phake/phake": "@stable",
+        "phpunit/phpunit": "4.8.*"
     },
     "autoload": {
         "psr-4": {
