@@ -23,4 +23,33 @@ You can also include the package directly in the `composer.json` file
 
 ## Usage
 
-For general usage instructions please refer to the [omnipay](https://github.com/thephpleague/omnipay) repository.
+### Creating the gateway
+To create the Acapture gateway you can use the code below;
+```
+$gateway = \Omnipay::create('Acapture');
+
+$gateway
+    ->setPassword('yourpassword')
+    ->setUserId('youruserid')
+    ->setEntityId('yourentityid');
+```
+### Creating a payment
+Once you have setup the gateway you can create a PaymentRequest;
+```
+$purchaseRequest = $gateway->purchase();
+$purchaseRequest
+    ->setCountry('NL')
+    ->setReturnUrl('https://your-return-url.cc/payment-status')
+    ->setType(PaymentType::PAYMENT_TYPE_DB)
+    ->setIssuer(PaymentBrand::PAYMENT_BRAND_IDEAL)
+    ->setCurrency('EUR')
+    ->setAmount('5.00');
+    
+$response = $purchaseRequest->send();
+```
+### Checking payment status
+After the payment request has been made you can check on the status;
+```
+$statusRequest = $gateway->paymentStatus('yourPayId');
+$response = $statusRequest->send();
+```
