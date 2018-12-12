@@ -38,7 +38,7 @@ class PaymentStatusRequestTest extends TestCase
         \Phake::when($clientInterface)->send()->thenReturn($responseInterface);
 
         $mockClient = \Phake::mock(Client::class);
-        \Phake::when($mockClient)->post(\Phake::anyParameters())->thenReturn($clientInterface);
+        \Phake::when($mockClient)->get(\Phake::anyParameters())->thenReturn($clientInterface);
 
         $this->request = new PaymentStatusRequest($mockClient, $this->getHttpRequest());
         $this->request->initialize();
