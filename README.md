@@ -1,4 +1,6 @@
 # Omnipay: PayVision/Acapture
+![Build Status](https://scrutinizer-ci.com/g/queueup-dev/omnipay-acapture/badges/build.png?b=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/queueup-dev/omnipay-acapture/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/queueup-dev/omnipay-acapture/)
 
 **acapture gateway integration for for the Omnipay PHP payment processing library**
 
