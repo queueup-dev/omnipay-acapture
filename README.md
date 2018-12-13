@@ -74,7 +74,7 @@ Embedding can be done on the front-end using the following code;
 <script src="{$response->getEmbedUrl()}"></script>
 <form action="{shopperResultUrl}" class="paymentWidgets" data-brands="VISA MASTER AMEX"></form>
 ```
-for more information see the [acapture documentation](https://docs.acaptureservices.com/tutorials/integration-guide).
+for more information see the [acapture documentation](https://docs.acaptureservices.com/tutorials/integration-guide).
 
 ### Checking payment status (embedded)
 After the checkout request has been made you can check on it's status:
