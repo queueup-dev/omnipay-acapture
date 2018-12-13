@@ -52,6 +52,12 @@ $purchaseRequest
     
 $response = $purchaseRequest->send();
 ```
+### Checking payment status (server-to-server)
+After the payment request has been made you can check on the status;
+```
+$statusRequest = $gateway->paymentStatus('yourPayId');
+$response = $statusRequest->send();
+```
 ### Create a payment (embedded)
 This payment request does not require compliance but requires web embedding.
 ```
@@ -68,10 +74,11 @@ Embedding can be done on the front-end using the following code;
 <script src="{$response->getEmbedUrl()}"></script>
 <form action="{shopperResultUrl}" class="paymentWidgets" data-brands="VISA MASTER AMEX"></form>
 ```
-for more information see the [acapture documentation](https://docs.acaptureservices.com/tutorials/integration-guide).
-### Checking payment status
-After the payment request has been made you can check on the status;
+for more information see the [acapture documentation](https://docs.acaptureservices.com/tutorials/integration-guide).
+
+### Checking payment status (embedded)
+After the checkout request has been made you can check on it's status:
 ```
-$statusRequest = $gateway->paymentStatus('yourPayId');
+$statusRequest = $gateway->checkoutStatus('yourCheckoutId');
 $response = $statusRequest->send();
 ```
