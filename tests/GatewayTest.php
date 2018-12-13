@@ -3,6 +3,7 @@ namespace Omnipay\Acapture\Tests;
 
 use Omnipay\Acapture\Gateway;
 use Omnipay\Acapture\Message\CopyAndPay\CheckoutRequest;
+use Omnipay\Acapture\Message\CopyAndPay\CheckoutStatusRequest;
 use Omnipay\Acapture\Message\ServerToServer\PaymentStatusRequest;
 use Omnipay\Acapture\Message\ServerToServer\PurchaseRequest;
 use Omnipay\Tests\TestCase;
@@ -44,6 +45,14 @@ class GatewayTest extends TestCase
 
         $this->assertInstanceOf(PaymentStatusRequest::class, $paymentStatus);
         $this->assertSame('12345', $paymentStatus->getPaymentId());
+    }
+
+    public function testCheckoutStatus()
+    {
+        $checkoutStatus = $this->gateway->checkoutStatus('12345');
+
+        $this->assertInstanceOf(CheckoutStatusRequest::class, $checkoutStatus);
+        $this->assertSame('12345', $checkoutStatus->getCheckoutId());
     }
 
     public function testGetSetPassword()

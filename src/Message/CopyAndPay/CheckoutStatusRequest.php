@@ -75,6 +75,6 @@ class CheckoutStatusRequest extends AbstractRequest
      */
     public function getPath()
     {
-        return 'checkouts' . $this->getCheckoutId() . '/payment';
+        return 'checkouts/' . $this->getCheckoutId() . '/payment';
     }
 }

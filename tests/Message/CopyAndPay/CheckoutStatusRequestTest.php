@@ -4,14 +4,14 @@ namespace Omnipay\Acapture\Tests\Message;
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\RequestInterface;
 use Guzzle\Http\Message\Response;
-use Omnipay\Acapture\Message\ServerToServer\PaymentStatusRequest;
-use Omnipay\Acapture\Message\ServerToServer\PaymentStatusResponse;
+use Omnipay\Acapture\Message\CopyAndPay\CheckoutStatusRequest;
+use Omnipay\Acapture\Message\CopyAndPay\CheckoutStatusResponse;
 use Omnipay\Tests\TestCase;
 
 class CheckoutStatusRequestTest extends TestCase
 {
     /**
-     * @var PaymentStatusRequest
+     * @var CheckoutStatusRequest
      */
     protected $request;
 
@@ -40,7 +40,7 @@ class CheckoutStatusRequestTest extends TestCase
         $mockClient = \Phake::mock(Client::class);
         \Phake::when($mockClient)->get(\Phake::anyParameters())->thenReturn($clientInterface);
 
-        $this->request = new PaymentStatusRequest($mockClient, $this->getHttpRequest());
+        $this->request = new CheckoutStatusRequest($mockClient, $this->getHttpRequest());
         $this->request->initialize();
 
         $this->password = uniqid('', true);
@@ -48,26 +48,26 @@ class CheckoutStatusRequestTest extends TestCase
         $this->userId = uniqid('', true);
     }
 
-    public function testGetPaymentIdEmpty()
+    public function testGetCheckoutIdEmpty()
     {
-        $this->assertSame(null, $this->request->getPaymentId());
+        $this->assertSame(null, $this->request->getCheckoutId());
     }
 
-    public function testGetPathWithoutPaymentId()
+    public function testGetPathWithoutCheckoutId()
     {
-        $this->assertSame('payments/', $this->request->getPath());
+        $this->assertSame('checkouts//payment', $this->request->getPath());
     }
 
-    public function testGetSetPaymentId()
+    public function testGetCheckoutId()
     {
-        $this->request->setPaymentId('test123');
-        $this->assertSame('test123', $this->request->getPaymentId());
+        $this->request->setCheckoutId('test123');
+        $this->assertSame('test123', $this->request->getCheckoutId());
     }
 
     public function testGetPath()
     {
-        $this->request->setPaymentId('1234');
-        $this->assertSame('payments/1234', $this->request->getPath());
+        $this->request->setCheckoutId('1234');
+        $this->assertSame('checkouts/1234/payment', $this->request->getPath());
     }
 
     public function testSendRequest()
@@ -76,8 +76,8 @@ class CheckoutStatusRequestTest extends TestCase
             ->setPassword($this->password)
             ->setUserId($this->userId)
             ->setEntityId($this->entityId)
-            ->setPaymentId('test-12345');
+            ->setCheckoutId('test-12345');
 
-        $this->assertInstanceOf(PaymentStatusResponse::class, $this->request->send());
+        $this->assertInstanceOf(CheckoutStatusResponse::class, $this->request->send());
     }
 }

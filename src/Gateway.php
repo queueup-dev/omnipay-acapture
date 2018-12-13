@@ -2,6 +2,7 @@
 namespace Omnipay\Acapture;
 
 use Omnipay\Acapture\Message\CopyAndPay\CheckoutRequest;
+use Omnipay\Acapture\Message\CopyAndPay\CheckoutStatusRequest;
 use Omnipay\Acapture\Message\ServerToServer\PaymentStatusRequest;
 use Omnipay\Acapture\Message\ServerToServer\PurchaseRequest;
 use Omnipay\Common\AbstractGateway;
@@ -42,6 +43,19 @@ class Gateway extends AbstractGateway
     public function embed($parameters = array())
     {
         return $this->createRequest(CheckoutRequest::class, $parameters);
+    }
+
+    /**
+     * Creates an checkout status request.
+     *
+     * @param $checkoutId
+     *
+     * @return \Omnipay\Common\Message\AbstractRequest|CheckoutStatusRequest
+     */
+    public function checkoutStatus($checkoutId)
+    {
+        $data = ['checkoutId' => $checkoutId];
+        return $this->createRequest(CheckoutStatusRequest::class, $data);
     }
 
     /**
