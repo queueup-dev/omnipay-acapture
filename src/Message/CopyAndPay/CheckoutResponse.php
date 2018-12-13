@@ -1,5 +1,7 @@
 <?php
-namespace Omnipay\Acapture\Message;
+namespace Omnipay\Acapture\Message\CopyAndPay;
+
+use Omnipay\Acapture\Message\AbstractResponse;
 
 class CheckoutResponse extends AbstractResponse
 {

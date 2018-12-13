@@ -4,8 +4,8 @@ namespace Omnipay\Acapture\Tests\Message;
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\RequestInterface;
 use Guzzle\Http\Message\Response;
-use Omnipay\Acapture\Message\PaymentStatusRequest;
-use Omnipay\Acapture\Message\PaymentStatusResponse;
+use Omnipay\Acapture\Message\ServerToServer\PaymentStatusRequest;
+use Omnipay\Acapture\Message\ServerToServer\PaymentStatusResponse;
 use Omnipay\Tests\TestCase;
 
 class PaymentStatusRequestTest extends TestCase

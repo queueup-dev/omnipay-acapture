@@ -1,7 +1,7 @@
 <?php
 namespace Omnipay\Acapture\Tests\Message;
 
-use Omnipay\Acapture\Message\CheckoutResponse;
+use Omnipay\Acapture\Message\CopyAndPay\CheckoutResponse;
 use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Tests\TestCase;
 

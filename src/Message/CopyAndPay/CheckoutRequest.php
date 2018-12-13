@@ -1,8 +1,9 @@
 <?php
-namespace Omnipay\Acapture\Message;
+namespace Omnipay\Acapture\Message\CopyAndPay;
 
 use Omnipay\Acapture\Common\PaymentType;
 use Omnipay\Acapture\Exception\InvalidPaymentTypeException;
+use Omnipay\Acapture\Message\AbstractRequest;
 
 class CheckoutRequest extends AbstractRequest
 {

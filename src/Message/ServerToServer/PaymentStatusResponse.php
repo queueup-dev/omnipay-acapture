@@ -1,7 +1,8 @@
 <?php
-namespace Omnipay\Acapture\Message;
+namespace Omnipay\Acapture\Message\ServerToServer;
 
 use Omnipay\Acapture\Common\ResultCode;
+use Omnipay\Acapture\Message\AbstractResponse;
 
 class PaymentStatusResponse extends AbstractResponse
 {

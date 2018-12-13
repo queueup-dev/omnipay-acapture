@@ -2,9 +2,9 @@
 namespace Omnipay\Acapture\Tests;
 
 use Omnipay\Acapture\Gateway;
-use Omnipay\Acapture\Message\CheckoutRequest;
-use Omnipay\Acapture\Message\PaymentStatusRequest;
-use Omnipay\Acapture\Message\PurchaseRequest;
+use Omnipay\Acapture\Message\CopyAndPay\CheckoutRequest;
+use Omnipay\Acapture\Message\ServerToServer\PaymentStatusRequest;
+use Omnipay\Acapture\Message\ServerToServer\PurchaseRequest;
 use Omnipay\Tests\TestCase;
 
 class GatewayTest extends TestCase

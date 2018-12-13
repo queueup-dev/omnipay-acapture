@@ -1,7 +1,7 @@
 <?php
 namespace Omnipay\Acapture\Tests\Message;
 
-use Omnipay\Acapture\Message\PurchaseResponse;
+use Omnipay\Acapture\Message\ServerToServer\PurchaseResponse;
 use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Tests\TestCase;
 

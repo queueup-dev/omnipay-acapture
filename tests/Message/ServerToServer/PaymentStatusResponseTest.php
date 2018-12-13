@@ -2,7 +2,7 @@
 namespace Omnipay\Acapture\Tests\Message;
 
 use Mockery\MockInterface;
-use Omnipay\Acapture\Message\PaymentStatusResponse;
+use Omnipay\Acapture\Message\ServerToServer\PaymentStatusResponse;
 use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Tests\TestCase;
 

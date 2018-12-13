@@ -1,6 +1,7 @@
 <?php
-namespace Omnipay\Acapture\Message;
+namespace Omnipay\Acapture\Message\ServerToServer;
 
+use Omnipay\Acapture\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
 
 /**

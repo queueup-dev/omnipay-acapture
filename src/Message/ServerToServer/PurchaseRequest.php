@@ -1,5 +1,5 @@
 <?php
-namespace Omnipay\Acapture\Message;
+namespace Omnipay\Acapture\Message\ServerToServer;
 
 use League\ISO3166\ISO3166;
 use Omnipay\Acapture\Common\PaymentBrand;
@@ -7,6 +7,7 @@ use Omnipay\Acapture\Common\PaymentType;
 use Omnipay\Acapture\Exception\InvalidCountryException;
 use Omnipay\Acapture\Exception\InvalidPaymentBrandException;
 use Omnipay\Acapture\Exception\InvalidPaymentTypeException;
+use Omnipay\Acapture\Message\AbstractRequest;
 
 /**
  * Class PurchaseRequest
