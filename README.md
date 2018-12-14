@@ -21,7 +21,7 @@ You can also include the package directly in the `composer.json` file
 ```
 {
     "require": {
-        "qup/omnipay-acapture": "^1.0"
+        "qup/omnipay-acapture": "^1.1"
     }
 }
 ```
