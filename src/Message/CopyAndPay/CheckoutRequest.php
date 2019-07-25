@@ -34,9 +34,15 @@ class CheckoutRequest extends AbstractRequest
     {
         $this->validateRequest();
 
-        $response = $this->httpClient->post(
+        $request = $this->httpClient->post(
             $this->getDataUrl()
-        )->send();
+        );
+
+        if ($this->getBearer()) {
+            $request->addHeader('Authorization', 'Bearer ' . $this->getBearer());
+        }
+
+        $response = $request->send();
 
         return new CheckoutResponse($this, json_decode((string)$response->getBody(), true));
     }

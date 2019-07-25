@@ -129,6 +129,27 @@ class CheckoutRequestTest extends TestCase
         $this->assertSame('https://test.test.test/v5/', $this->request->getEndpoint());
     }
 
+    public function testGetSetBearer()
+    {
+        $this->request->setBearer('test123');
+        $this->assertSame('test123', $this->request->getBearer());
+    }
+
+    public function testGetBearerWithEnv()
+    {
+        putenv('ACAPTURE_AUTH_BEARER=bearertest123');
+
+        $this->assertSame('bearertest123', $this->request->getBearer());
+    }
+
+    public function testGetBearerOverridesWithEnv()
+    {
+        putenv('ACAPTURE_AUTH_BEARER=bearertest1234');
+
+        $this->request->setBearer('test123');
+        $this->assertSame('bearertest1234', $this->request->getBearer());
+    }
+
     public function testGetDataUrl()
     {
         $this->setMockRequestData();

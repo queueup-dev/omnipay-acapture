@@ -107,6 +107,28 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     }
 
     /**
+     * Sets the bearer
+     *
+     * @param $bearer
+     *
+     * @return \Omnipay\Common\Message\AbstractRequest
+     */
+    public function setBearer($bearer)
+    {
+        return $this->setParameter('bearer', $bearer);
+    }
+
+    /**
+     * Returns the bearer
+     *
+     * @return string
+     */
+    public function getBearer()
+    {
+        return (getenv('ACAPTURE_AUTH_BEARER') ?: $this->getParameter('bearer'));
+    }
+
+    /**
      * Sets the entityId
      *
      * @param $entityId
