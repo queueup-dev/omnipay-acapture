@@ -18,7 +18,9 @@ class CheckoutRequest extends AbstractRequest
         return parent::getData() + [
             'amount' => $this->getAmount(),
             'currency' => $this->getCurrency(),
-            'paymentType' => $this->getType()
+            'paymentType' => $this->getType(),
+            'merchantTransactionId' => $this->getTransactionId(),
+            'merchantInvoiceId' => $this->getInvoiceId()
         ];
     }
 
@@ -86,6 +88,28 @@ class CheckoutRequest extends AbstractRequest
     public function getType()
     {
         return $this->getParameter('type');
+    }
+
+    /**
+     * Sets the merchant invoice Id
+     *
+     * @param string $invoiceId
+     *
+     * @return $this|\Omnipay\Common\Message\AbstractRequest
+     */
+    public function setInvoiceId($invoiceId)
+    {
+        return $this->setParameter('invoiceId', $invoiceId);
+    }
+
+    /**
+     * Returns the merchant invoice Id
+     *
+     * @return mixed
+     */
+    public function getInvoiceId()
+    {
+        return $this->getParameter('invoiceId');
     }
 
     /**

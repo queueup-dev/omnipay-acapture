@@ -86,12 +86,14 @@ class CheckoutRequestTest extends TestCase
     public function setMockRequestData()
     {
         $this->request
+            ->setInvoiceId('InvoiceIdtest-123')
             ->setPassword($this->password)
             ->setUserId($this->userId)
             ->setEntityId($this->entityId)
             ->setType('DB')
             ->setCurrency('EUR')
-            ->setAmount('50.02');
+            ->setAmount('50.02')
+            ->setTransactionId('TransactionIdtest-123');
     }
 
     public function testGetData()
@@ -104,7 +106,9 @@ class CheckoutRequestTest extends TestCase
             'authentication.entityId' => $this->entityId,
             'amount' => '50.02',
             'currency' => 'EUR',
-            'paymentType' => 'DB'
+            'paymentType' => 'DB',
+            'merchantTransactionId' => 'TransactionIdtest-123',
+            'merchantInvoiceId' => 'InvoiceIdtest-123'
         ];
 
         $data = $this->request->getData();
@@ -150,6 +154,13 @@ class CheckoutRequestTest extends TestCase
         $this->assertSame('bearertest1234', $this->request->getBearer());
     }
 
+    public function testGetSetInvoiceId()
+    {
+        $this->request->setInvoiceId('invoiceId1234');
+
+        $this->assertSame('invoiceId1234', $this->request->getInvoiceId());
+    }
+
     public function testGetDataUrl()
     {
         $this->setMockRequestData();
@@ -161,7 +172,8 @@ class CheckoutRequestTest extends TestCase
             $this->password.
             '&authentication.entityId='.
             $this->entityId.
-            '&amount=50.02&currency=EUR&paymentType=DB'
+            '&amount=50.02&currency=EUR&paymentType=DB'.
+            '&merchantTransactionId=TransactionIdtest-123&merchantInvoiceId=InvoiceIdtest-123'
             , $this->request->getDataUrl()
         );
     }
