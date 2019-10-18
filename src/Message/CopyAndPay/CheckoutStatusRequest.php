@@ -1,6 +1,7 @@
 <?php
 namespace Omnipay\Acapture\Message\CopyAndPay;
 
+use Guzzle\Http\Exception\ClientErrorResponseException;
 use Omnipay\Acapture\Message\AbstractRequest;
 
 class CheckoutStatusRequest extends AbstractRequest
@@ -17,9 +18,14 @@ class CheckoutStatusRequest extends AbstractRequest
     {
         $this->validateRequest();
 
-        $response = $this->httpClient->get(
-            $this->getDataUrl()
-        )->send();
+        try {
+            $response = $this->httpClient->get(
+                $this->getDataUrl()
+            )->send();
+        } catch (ClientErrorResponseException $exception) {
+            // The 4xx errors are perfectly readable and mappable to a CheckoutStatusResponse.
+            $response = $exception->getResponse();
+        }
 
         return new CheckoutStatusResponse($this, json_decode((string)$response->getBody(), true));
     }
